@@ -1,0 +1,37 @@
+{
+  "name": "functools",
+  "version": "0.1.0",
+  "description": "Just a set of utility functions",
+  "main": "dist/functools.js",
+  "module": "dist/functools.esm.js",
+  "source": "src/index.js",
+  "scripts": {
+    "build": "rollup --config",
+    "test": "mocha --ui qunit -r esm test/**/*.test.js",
+    "test:watch": "npm test -- --watch --reporter min",
+    "format": "prettier --single-quote --write src/**/*.js test/**/*.js"
+  },
+  "sideEffects": false,
+  "author": "Heiker",
+  "license": "MIT",
+  "keywords": [
+    "fp",
+    "functional",
+    "utility"
+  ],
+  "devDependencies": {
+    "esm": "^3.2.25",
+    "mocha": "^6.2.2",
+    "prettier": "^1.19.1",
+    "rollup": "^1.27.0",
+    "rollup-plugin-terser": "^5.1.2"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
