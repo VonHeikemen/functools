@@ -18,23 +18,27 @@ test('can "extract" values from a Future', async function() {
   t.equal(await result.cata(get, catchit), value);
 });
 
-test('Filterable Distributivity', async function () {
-  // Val.filter(x => p(x) && q(x)) 
-  // is equivalent to 
+test('Filterable Distributivity', async function() {
+  // Val.filter(x => p(x) && q(x))
+  // is equivalent to
   // Val.filter(p).filter(q)
 
   const expected = 'hello';
   const is_string = str => typeof str === 'string';
   const is_hello = str => str === 'hello';
 
-  const one = Future.of(expected).filter(val => is_string(val) && is_hello(val));
-  const two = Future.of(expected).filter(is_string).filter(is_hello);
+  const one = Future.of(expected).filter(
+    val => is_string(val) && is_hello(val)
+  );
+  const two = Future.of(expected)
+    .filter(is_string)
+    .filter(is_hello);
 
   t.equal(await get(one), expected);
   t.equal(await get(two), expected);
 });
 
-test('Filterable Identity', async function () {
+test('Filterable Identity', async function() {
   // Val.filter(x => true)
   // is equivalent to
   // val
@@ -44,7 +48,7 @@ test('Filterable Identity', async function () {
   t.equal(await get(result), 'hello');
 });
 
-test('Filterable Annihilation', async function () {
+test('Filterable Annihilation', async function() {
   // A.filter(x => false)
   // is equivalent to
   // B.filter(x => false)
@@ -162,8 +166,8 @@ test('Applicative Interchange', async function() {
 });
 
 test('Alt Associativity', async function() {
-  // Val.alt(b).alt(c) 
-  // is equivalent to 
+  // Val.alt(b).alt(c)
+  // is equivalent to
   // Val.alt(b.alt(c))
 
   const expected = 'hello';
@@ -178,9 +182,9 @@ test('Alt Associativity', async function() {
   t.equal(await get(two), expected);
 });
 
-test('Alt Distributivity', async function () {
-  // Val.alt(b).map(f) 
-  // is equivalent to 
+test('Alt Distributivity', async function() {
+  // Val.alt(b).map(f)
+  // is equivalent to
   // Val.map(f).alt(b.map(f))
 
   const expected = 'hello!!';
@@ -195,4 +199,3 @@ test('Alt Distributivity', async function () {
   t.equal(await get(one), expected);
   t.equal(await get(two), expected);
 });
-

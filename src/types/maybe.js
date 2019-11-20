@@ -44,9 +44,7 @@ function Just(value) {
       return Just(value);
     },
     filter: function(predicate) {
-      return predicate(value)
-        ? Just(value)
-        : Nothing();
+      return predicate(value) ? Just(value) : Nothing();
     },
 
     is_just: true,

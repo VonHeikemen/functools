@@ -13,15 +13,19 @@ function Future(promise) {
     },
 
     alt: function(value) {
-      if(value.is_future) {
-        return Future(promise.catch(function() {
-          return value.join();
-        }));
+      if (value.is_future) {
+        return Future(
+          promise.catch(function() {
+            return value.join();
+          })
+        );
       }
 
-      return Future(promise.catch(function() {
-        return value;
-      }));
+      return Future(
+        promise.catch(function() {
+          return value;
+        })
+      );
     },
     altchain: function(fn) {
       return Future(promise.catch(fn));
@@ -30,16 +34,14 @@ function Future(promise) {
       var fn = function(value) {
         var result = predicate(value);
 
-        if(result.then) {
+        if (result.then) {
           result.then(function(unwrapped) {
-            return unwrapped
-              ? value
-              : Promise.reject(false);
+            return unwrapped ? value : Promise.reject(false);
           });
         }
 
         return result ? value : Promise.reject(false);
-      }
+      };
 
       return Future(promise.then(fn));
     },

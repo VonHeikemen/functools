@@ -34,9 +34,9 @@ test('can extract values from Maybe', function() {
   t.equal(nothing.cata(get, catchit), fallback);
 });
 
-test('Filterable Distributivity', function () {
-  // Val.filter(x => p(x) && q(x)) 
-  // is equivalent to 
+test('Filterable Distributivity', function() {
+  // Val.filter(x => p(x) && q(x))
+  // is equivalent to
   // Val.filter(p).filter(q)
 
   const expected = 'hello';
@@ -44,13 +44,15 @@ test('Filterable Distributivity', function () {
   const is_hello = str => str === 'hello';
 
   const one = Maybe(expected).filter(val => is_string(val) && is_hello(val));
-  const two = Maybe(expected).filter(is_string).filter(is_hello);
+  const two = Maybe(expected)
+    .filter(is_string)
+    .filter(is_hello);
 
   t.equal(get(one), expected);
   t.equal(get(two), expected);
 });
 
-test('Filterable Identity', function () {
+test('Filterable Identity', function() {
   // Val.filter(x => true)
   // is equivalent to
   // val
@@ -60,7 +62,7 @@ test('Filterable Identity', function () {
   t.equal(get(result), 'hello');
 });
 
-test('Filterable Annihilation', function () {
+test('Filterable Annihilation', function() {
   // A.filter(x => false)
   // is equivalent to
   // B.filter(x => false)
@@ -176,8 +178,8 @@ test('Applicative Interchange', function() {
 });
 
 test('Alt Associativity', function() {
-  // Val.alt(b).alt(c) 
-  // is equivalent to 
+  // Val.alt(b).alt(c)
+  // is equivalent to
   // Val.alt(b.alt(c))
 
   const expected = Maybe.Just('hello');
@@ -191,9 +193,9 @@ test('Alt Associativity', function() {
   t.equal(get(two), get(expected));
 });
 
-test('Alt Distributivity', function () {
-  // Val.alt(b).map(f) 
-  // is equivalent to 
+test('Alt Distributivity', function() {
+  // Val.alt(b).map(f)
+  // is equivalent to
   // Val.map(f).alt(b.map(f))
 
   const expected = 'hello!!';
