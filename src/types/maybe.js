@@ -7,6 +7,14 @@ function Nothing() {
       return nothing_path();
     },
 
+    alt: function(arg) {
+      return arg;
+    },
+    altchain: function(fn) {
+      return fn();
+    },
+    filter: Nothing,
+
     is_just: false,
     is_nothing: true
   };
@@ -27,6 +35,18 @@ function Just(value) {
     },
     cata: function(just_path, nothing_path) {
       return just_path(value);
+    },
+
+    alt: function() {
+      return Just(value);
+    },
+    altchain: function() {
+      return Just(value);
+    },
+    filter: function(predicate) {
+      return predicate(value)
+        ? Just(value)
+        : Nothing();
     },
 
     is_just: true,

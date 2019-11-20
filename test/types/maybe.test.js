@@ -34,6 +34,43 @@ test('can extract values from Maybe', function() {
   t.equal(nothing.cata(get, catchit), fallback);
 });
 
+test('Filterable Distributivity', function () {
+  // Val.filter(x => p(x) && q(x)) 
+  // is equivalent to 
+  // Val.filter(p).filter(q)
+
+  const expected = 'hello';
+  const is_string = str => typeof str === 'string';
+  const is_hello = str => str === 'hello';
+
+  const one = Maybe(expected).filter(val => is_string(val) && is_hello(val));
+  const two = Maybe(expected).filter(is_string).filter(is_hello);
+
+  t.equal(get(one), expected);
+  t.equal(get(two), expected);
+});
+
+test('Filterable Identity', function () {
+  // Val.filter(x => true)
+  // is equivalent to
+  // val
+
+  const result = Maybe('hello').filter(val => true);
+
+  t.equal(get(result), 'hello');
+});
+
+test('Filterable Annihilation', function () {
+  // A.filter(x => false)
+  // is equivalent to
+  // B.filter(x => false)
+
+  const one = Maybe('hello').filter(val => false);
+  const two = Maybe('hi').filter(val => false);
+
+  t.equal(one.is_nothing, two.is_nothing);
+});
+
 test('Functor Identity', function() {
   // Val.map(val => val)
   // is equivalent to
@@ -133,6 +170,40 @@ test('Applicative Interchange', function() {
 
   const one = Maybe.of(value).ap(Fn);
   const two = Fn.ap(Maybe.of(fx => fx(value)));
+
+  t.equal(get(one), expected);
+  t.equal(get(two), expected);
+});
+
+test('Alt Associativity', function() {
+  // Val.alt(b).alt(c) 
+  // is equivalent to 
+  // Val.alt(b.alt(c))
+
+  const expected = Maybe.Just('hello');
+  const A = Maybe.Nothing();
+  const B = Maybe.Nothing();
+
+  const one = A.alt(B).alt(expected);
+  const two = A.alt(B.alt(expected));
+
+  t.equal(get(one), get(expected));
+  t.equal(get(two), get(expected));
+});
+
+test('Alt Distributivity', function () {
+  // Val.alt(b).map(f) 
+  // is equivalent to 
+  // Val.map(f).alt(b.map(f))
+
+  const expected = 'hello!!';
+  const fx = str => str + '!!';
+
+  const A = Maybe.Nothing();
+  const Value = Maybe('hello');
+
+  const one = A.alt(Value).map(fx);
+  const two = A.map(fx).alt(Value.map(fx));
 
   t.equal(get(one), expected);
   t.equal(get(two), expected);
