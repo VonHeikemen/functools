@@ -256,6 +256,8 @@ Most of this function support currying by default.
    .cata(Identity, fallback)
 ```
 
+Check out [this codepen example](https://codepen.io/VonHeikemen/pen/QWWYJwZ) for a better look of how it would be used.
+
 ## Want to use it?
 
 I guess you'll have to clone/download it and then do.
