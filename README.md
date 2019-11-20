@@ -174,7 +174,7 @@ Most of this function support currying by default.
 ```
 
 ### tap
-- Let a `function` take a peek at a value and give it back.
+- Let a `function` take a look at a value and give it back.
 
 ```javascript
  const taplog = tap(console.log)
@@ -183,7 +183,7 @@ Most of this function support currying by default.
 ```
 
 ### taplog
-- Let `console.log` take a peek at a value and give it back.
+- Let `console.log` take a look at a value and give it back.
 
 ```javascript
  async_greet().then(taplog).then(do_stuff)
