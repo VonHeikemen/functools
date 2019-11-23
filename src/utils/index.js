@@ -69,6 +69,46 @@ function path(keys, obj) {
   return result;
 }
 
+function assoc(path, value, obj) {
+  if (arguments.length === 1) {
+    return assoc.bind(this, path);
+  } else if (arguments.length === 2) {
+    return assoc.bind(this, path, value);
+  }
+
+  if (path.length === 0) {
+    return value;
+  }
+
+  var index = path[0];
+
+  if (path.length > 1) {
+    var create_new =
+      typeof obj !== 'object' || obj === null || !obj.hasOwnProperty(index);
+
+    var next = create_new
+      ? typeof path[1] === 'number'
+        ? []
+        : {}
+      : obj[index];
+
+    value = assoc(Array.prototype.slice.call(path, 1), value, next);
+  }
+
+  if (typeof index === 'number' && Array.isArray(obj)) {
+    var arr = [].concat(obj);
+    arr[index] = value;
+    return arr;
+  } else {
+    var result = {};
+    for (var p in obj) {
+      result[p] = obj[p];
+    }
+    result[index] = value;
+    return result;
+  }
+}
+
 function flip(fn) {
   return function flipped(a, b) {
     if (arguments.length === 1) {
@@ -132,6 +172,7 @@ function curry(fn, arity) {
   }
 
   var args = [null, fn, arity].concat(rest);
+
   return curry.bind.apply(curry, args);
 }
 
@@ -200,6 +241,7 @@ export {
   flip,
   pick,
   path,
+  assoc,
   pipe,
   compose,
   curry,

@@ -1,5 +1,6 @@
 import { strict as t } from 'assert';
 import {
+  assoc,
   compose,
   curry,
   debounce,
@@ -45,6 +46,44 @@ test('choose props from object', function() {
 
   t.deepEqual(pick('a,c', obj), expected, '');
   t.deepEqual(pick('a,c')(obj), expected, '');
+});
+
+suite('# assoc');
+
+test('add a key to an empty object', function() {
+  const expected = { some: 1 };
+  t.deepEqual(assoc(['some'], 1, {}), expected, '');
+});
+
+test('add a key to a non-empty object', function() {
+  const expected = { a: 2, some: 1 };
+  t.deepEqual(assoc(['some'], 1, { a: 2 }), expected, '');
+});
+
+test('adds a nested key to a non-empty object', function() {
+  const nested_object = { some: 1, b: { c: 2 } };
+  const nested_array = { some: 1, b: [2] };
+
+  t.deepEqual(assoc(['b', 'c'], 2, { some: 1 }), nested_object, '');
+  t.deepEqual(assoc(['b', 0], 2, { some: 1 }), nested_array, '');
+});
+
+test('returns value on empty path', function() {
+  t.equal(assoc([], 2, { some: 1 }), 2, '');
+});
+
+test('update existing key', function() {
+  const expected = { some: 2 };
+  t.deepEqual(assoc(['some'], 2, { some: 1 }), expected, '');
+});
+
+test('update nested key', function() {
+  const expected = { some: { nested: { value: 2 } } };
+  t.deepEqual(
+    assoc(['some', 'nested', 'value'], 2, { some: null }),
+    expected,
+    ''
+  );
 });
 
 suite('# flip');
@@ -105,8 +144,8 @@ suite('# curry');
 
 test('allow partial application until function arity is satisfied', function() {
   const add_four = (a, b, c, d) => a + b + c + d;
-  const stage_one = curry(add_four);
 
+  const stage_one = curry(add_four);
   const stage_two = stage_one(1, 2);
   const final_stage = stage_two(3);
 
