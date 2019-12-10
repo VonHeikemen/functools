@@ -6,9 +6,11 @@ function Effect(effect) {
       });
     },
     chain: function(fn) {
-      return Effect(effect)
-        .map(fn)
-        .run();
+      return Effect(function() {
+        var res = fn(effect());
+
+        return res != null && res.is_effect ? res.run() : res;
+      });
     },
     ap: function(functor) {
       return functor.map(function(fn) {

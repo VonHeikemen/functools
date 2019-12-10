@@ -153,7 +153,7 @@ test('Monad Left Identity', function() {
   const one = Effect.of(value).chain(fx);
   const two = fx(value);
 
-  t.equal(one, expected);
+  t.equal(one.run(), expected);
   t.equal(two, expected);
 });
 

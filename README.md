@@ -227,7 +227,7 @@ Most of this function support currying by default.
 ```
 
 ### Effect
-- Represents a side effect. It wraps an `effect` runs it only when you call `run` or `chain` it to another Effect.
+- Represents a side effect. It wraps an `effect` runs it only when you call `run`.
 
 ```javascript
  const read = id => Effect(() => $(id).text())
