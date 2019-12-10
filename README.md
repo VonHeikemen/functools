@@ -61,6 +61,13 @@ Most of this function support currying by default.
  path('a.b', {a: {b: 1}}) // => 1
 ```
 
+### assoc
+- It creates a shallow copy of the value in the provided `path` then sets or overrides the property with specified value.
+
+```javascript
+ assoc(['a', 'b', 'c'], 42, {a: {b: {c: 0}}}); // => {a: {b: {c: 42}}}
+```
+
 ### flip
 - It flips the order of the first two arguments of a function. It's only meant to be used with a function that takes two arguments.
 
@@ -187,6 +194,42 @@ Most of this function support currying by default.
 
 ```javascript
  async_greet().then(taplog).then(do_stuff)
+```
+
+## Lens
+- Wrap a getter and a setter function into a composable unit. It can be used to modify deeply nested object structures.  Once you have a lens you can `view`, replace (`set`) and transform (`over`) an object with the provided utility functions.
+
+```javascript
+const x_lens = Lens(path(['x']), assoc(['x']));
+const negate = arg => arg * -1;
+
+Lens.view(x_lens, {x: 1, y: 2});          // => 1
+Lens.set(x_lens, 4, {x: 1, y: 2});        // => {x: 4, y: 2}
+Lens.over(x_lens, negate, {x: 1, y: 2});  // => {x: -1, y: 2}
+```
+
+### Lens.prop
+- It's lens wrapper around `path` and `assoc` functions. It is meant to create a lens over a single property.
+
+```javascript
+const x_lens = Lens.prop('x');
+const negate = arg => arg * -1;
+
+Lens.view(x_lens, {x: 1, y: 2});          // => 1
+Lens.set(x_lens, 4, {x: 1, y: 2});        // => {x: 4, y: 2}
+Lens.over(x_lens, negate, {x: 1, y: 2});  // => {x: -1, y: 2}
+```
+
+### Lens.path
+- It's lens wrapper around `path` and `assoc` functions. It can create a lens over nested properties.
+
+```javascript
+const x_lens = Lens.path(['x']);
+const negate = arg => arg * -1;
+
+Lens.view(x_lens, {x: 1, y: 2});          // => 1
+Lens.set(x_lens, 4, {x: 1, y: 2});        // => {x: 4, y: 2}
+Lens.over(x_lens, negate, {x: 1, y: 2});  // => {x: -1, y: 2}
 ```
 
 ## Types
