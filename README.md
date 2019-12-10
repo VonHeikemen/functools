@@ -88,7 +88,7 @@ Most of this function support currying by default.
 ```
 
 ### compose
-- Call a list of functions from left-to-right. The result of the previous function becomes the input of the next.
+- Call a list of functions from right-to-left. The result of the previous function becomes the input of the next.
 
 ```javascript
  const capitalize = word => word.charAt(0).toUpperCase() + word.slice(1)
