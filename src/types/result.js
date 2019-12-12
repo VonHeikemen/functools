@@ -6,6 +6,9 @@ function Err(arg) {
   return {
     map: return_err,
     chain: return_err,
+    altchain: function(fn) {
+      return fn(arg);
+    },
     ap: return_err,
     cata: function(ok_path, err_path) {
       return err_path(arg);
@@ -33,6 +36,9 @@ function Ok(value) {
     },
     chain: function(fn) {
       return fn(value);
+    },
+    altchain: function() {
+      return Ok(value);
     },
     ap: function(functor) {
       return functor.map(function _ap(fn) {
