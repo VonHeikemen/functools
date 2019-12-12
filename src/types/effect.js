@@ -1,19 +1,19 @@
 function Effect(effect) {
   return {
     map: function(fn) {
-      return Effect(function() {
+      return Effect(function _map() {
         return fn(effect());
       });
     },
     chain: function(fn) {
-      return Effect(function() {
+      return Effect(function _chain() {
         var res = fn(effect());
 
         return res != null && res.is_effect ? res.run() : res;
       });
     },
     ap: function(functor) {
-      return functor.map(function(fn) {
+      return functor.map(function _ap(fn) {
         return fn(effect());
       });
     },
@@ -27,7 +27,7 @@ function Effect(effect) {
 }
 
 Effect.of = function(value) {
-  return Effect(function() {
+  return Effect(function _of() {
     return value;
   });
 };

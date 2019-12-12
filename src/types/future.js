@@ -4,7 +4,7 @@ function Future(promise) {
       return Future(promise.then(fn));
     },
     ap: function(functor) {
-      return functor.map(function(fn) {
+      return functor.map(function _ap(fn) {
         return promise.then(fn);
       });
     },
@@ -15,14 +15,14 @@ function Future(promise) {
     alt: function(value) {
       if (value.is_future) {
         return Future(
-          promise.catch(function() {
+          promise.catch(function _altfuture() {
             return value.join();
           })
         );
       }
 
       return Future(
-        promise.catch(function() {
+        promise.catch(function _alt() {
           return value;
         })
       );
@@ -35,7 +35,7 @@ function Future(promise) {
         var result = predicate(value);
 
         if (result.then) {
-          result.then(function(unwrapped) {
+          result.then(function _filter(unwrapped) {
             return unwrapped ? value : Promise.reject(false);
           });
         }

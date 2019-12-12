@@ -11,7 +11,7 @@ function identity(arg) {
 }
 
 function constant(arg) {
-  return function() {
+  return function _constant() {
     return arg;
   };
 }
@@ -122,7 +122,7 @@ function flip(fn) {
 function pipe() {
   var fns = arguments;
 
-  return function() {
+  return function _pipe() {
     var acc = fns[0].apply(this, arguments);
 
     for (var i = 1; i < fns.length; i++) {
@@ -136,7 +136,7 @@ function pipe() {
 function compose() {
   var fns = arguments;
 
-  return function() {
+  return function _composed() {
     var last = fns.length - 1;
     var acc = fns[last--].apply(this, arguments);
 
@@ -151,7 +151,7 @@ function compose() {
 function xargs() {
   var fns = arguments;
 
-  return function() {
+  return function _xargs() {
     for (var i = 0; i < fns.length; i++) {
       fns[i].apply(this, arguments);
     }
@@ -182,9 +182,9 @@ function debounce(delay, fn) {
   }
 
   var timeout_id;
-  return function() {
+  return function _debounced() {
     clearTimeout(timeout_id);
-    timeout_id = setTimeout(function() {
+    timeout_id = setTimeout(function _apply() {
       return fn.apply(null, arguments);
     }, delay);
   };

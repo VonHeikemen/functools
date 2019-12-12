@@ -29,7 +29,7 @@ function Just(value) {
       return fn(value);
     },
     ap: function(functor) {
-      return functor.map(function(fn) {
+      return functor.map(function _ap(fn) {
         return fn(value);
       });
     },
