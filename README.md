@@ -16,7 +16,7 @@ Most of this function support currying by default.
 - Always returns `false`.
 
 ```javascript
- F() // => true
+ F() // => false
 ```
 
 ### identity
